@@ -1,0 +1,36 @@
+[0.000000] Initializing cgroup subsys cpu
+[0.000000] Linux version 3.14.0-rc2+ (tony@vamp) (gcc version 4.8.1 (Ubuntu/Linaro 4.8.1-10ubuntu7) ) #1 SMP PREEMPT Tue Apr 8 15:21:34 EDT 2014
+[0.000000] Kernel was built at commit id 'acf6f68'
+[0.000000] CPU: AArch64 Processor [410fc0f0] revision 0
+[0.000000] bootconsole [earlycon0] enabled
+[0.000000] Memory limited to 4096MB
+[0.000000] cma: CMA: reserved 16 MiB at 17f000000
+[0.000000] On node 0 totalpages: 1048576
+[0.000000]   DMA32 zone: 7168 pages used for memmap
+[0.000000]   DMA32 zone: 0 pages reserved
+[0.000000]   DMA32 zone: 524288 pages, LIFO batch:31
+[0.000000]   Normal zone: 7168 pages used for memmap
+[0.000000]   Normal zone: 524288 pages, LIFO batch:31
+[0.000000] PERCPU: Embedded 11 pages/cpu @ffffffc0fefb1000 s16192 r8192 d20672 u45056
+[0.000000] pcpu-alloc: s16192 r8192 d20672 u45056 alloc=11*4096
+[0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 
+[0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 1034240
+[0.000000] Kernel command line: earlyprintk=pl011,0x1c090000 console=ttyAMA0 lpj=19988480 norandmaps rw loglevel=8 mem=4GB root=/dev/sda1
+[0.000000] PID hash table entries: 4096 (order: 3, 32768 bytes)
+[0.000000] Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes)
+[0.000000] Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes)
+[0.000000] software IO TLB [mem 0x177000000-0x17b000000] (64MB) mapped at [ffffffc0f7000000-ffffffc0faffffff]
+[0.000000] Memory: 4041184K/4194304K available (4228K kernel code, 365K rwdata, 1672K rodata, 267K init, 305K bss, 153120K reserved)
+[0.000000] Virtual kernel memory layout:
+    vmalloc : 0xffffff8000000000 - 0xffffffbbffff0000   (245759 MB)
+    vmemmap : 0xffffffbc01c00000 - 0xffffffbc05400000   (    56 MB)
+    modules : 0xffffffbffc000000 - 0xffffffc000000000   (    64 MB)
+    memory  : 0xffffffc000000000 - 0xffffffc100000000   (  4096 MB)
+      .init : 0xffffffc000645000 - 0xffffffc000687f40   (   268 kB)
+      .text : 0xffffffc000080000 - 0xffffffc000644104   (  5905 kB)
+      .data : 0xffffffc000688000 - 0xffffffc0006e3618   (   366 kB)
+[0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[0.000000] Preemptible hierarchical RCU implementation.
+[0.000000] 	RCU restricting CPUs from NR_CPUS=8 to nr_cpu_ids=4.
+[0.000000] RCU: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+[0.000000] NR_IRQS:64 nr_irqs:64 0
