@@ -17,4 +17,4 @@ build/ARM/gem5.opt configs/example/se.py \
 	--mem-size=4GB \
 	--sys-clock=1600MHz \
 	--cpu-type=MinorCPU \
-	--cmd $BIN
+	--cmd "$BIN"
