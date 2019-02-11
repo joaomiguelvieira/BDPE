@@ -7,7 +7,7 @@
         "kernel_addr_check": true, 
         "highest_el_is_64": false, 
         "machine_type": "DTOnly", 
-        "kernel": "/research/ece/lnis/USERS/jvieira/2019_01_17.yasir_documentation/gem5-ef96b32a28424e0d543198fee0964bb05c88704f/fs_ubuntu/binaries/vmlinux", 
+        "kernel": "/research/ece/lnis/USERS/jvieira/gem5/fs_ubuntu/binaries/vmlinux", 
         "iobus": {
             "forward_latency": 1, 
             "slave": {
@@ -244,7 +244,7 @@
             }, 
             "in_addr_map": true
         }, 
-        "dtb_filename": "/research/ece/lnis/USERS/jvieira/2019_01_17.yasir_documentation/gem5-ef96b32a28424e0d543198fee0964bb05c88704f/fs_ubuntu/binaries/armv8_gem5_v1_4cpu.dtb", 
+        "dtb_filename": "/research/ece/lnis/USERS/jvieira/gem5/fs_ubuntu/binaries/armv8_gem5_v1_4cpu.dtb", 
         "panic_on_panic": false, 
         "enable_context_switch_stats_dump": false, 
         "work_begin_ckpt_count": 0, 
@@ -2786,7 +2786,7 @@
                     "eventq_index": 0, 
                     "cxx_class": "RawDiskImage", 
                     "path": "system.cf0.image.child", 
-                    "image_file": "/research/ece/lnis/USERS/jvieira/2019_01_17.yasir_documentation/gem5-ef96b32a28424e0d543198fee0964bb05c88704f/fs_ubuntu/disks/gem5_base.img", 
+                    "image_file": "/research/ece/lnis/USERS/jvieira/gem5/fs_ubuntu/disks/gem5_base.img", 
                     "type": "RawDiskImage"
                 }, 
                 "path": "system.cf0.image", 
@@ -3023,8 +3023,8 @@
         ], 
         "num_work_ids": 16, 
         "boot_loader": [
-            "/research/ece/lnis/USERS/jvieira/2019_01_17.yasir_documentation/gem5-ef96b32a28424e0d543198fee0964bb05c88704f/fs_ubuntu/binaries/boot_emm.arm64", 
-            "/research/ece/lnis/USERS/jvieira/2019_01_17.yasir_documentation/gem5-ef96b32a28424e0d543198fee0964bb05c88704f/fs_ubuntu/binaries/boot_emm.arm"
+            "/research/ece/lnis/USERS/jvieira/gem5/fs_ubuntu/binaries/boot_emm.arm64", 
+            "/research/ece/lnis/USERS/jvieira/gem5/fs_ubuntu/binaries/boot_emm.arm"
         ], 
         "exit_on_work_items": false
     }, 

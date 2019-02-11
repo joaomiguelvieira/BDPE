@@ -1579,11 +1579,11 @@ output decoder {{
       IntRegIndex rn = (IntRegIndex) (uint8_t) bits(machInst, 9, 5);
       IntRegIndex rnsp = makeSP(rn);
 
+      IntRegIndex rm = (IntRegIndex) (uint8_t) bits(machInst, 20, 16);
+
       uint8_t imm3 = bits(machInst, 12, 10);
 
       ArmExtendType type = (ArmExtendType) (uint8_t) bits(machInst, 15, 13);
-
-      IntRegIndex rm = (IntRegIndex) (uint8_t) bits(machInst, 20, 16);
 
       switch (bits(machInst, 30, 29)) {
         case 0x0:

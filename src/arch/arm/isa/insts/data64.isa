@@ -155,22 +155,37 @@ let {{
     buildDataInst("add", "Dest64 = resTemp = Op164 + secOp;", "add")
     buildDataInst("bdp",
             """
-            unsigned int kernels[4096];
+            // unsigned int kernels[4096];
 
-            kernels[0] = 0xffffffff;
-            kernels[1] = 0x00000001;
+            // kernels[0] = 0xffffffff;
+            // kernels[1] = 0x00000001;
 
-            int kernel = kernels[secOp];
+            // int kernel = kernels[secOp];
 
-            resTemp = 0;
+            // resTemp = 0;
 
-            for (int i = 0; i < 32; i++) {
-                resTemp += ((kernel & 1) == (Op164 & 1)) ? 1 : 0;
-                kernel >>= 1;
-                Op164 >>= 1;
-            }
+            // for (int i = 0; i < 32; i++) {
+            //     resTemp += ((kernel & 1) == (Op164 & 1)) ? 1 : 0;
+            //     kernel >>= 1;
+            //     Op164 >>= 1;
+            // }
 
-            Dest64 = resTemp;
+            // Dest64 = resTemp;
+
+            uint64_t num = Op164;
+
+            for (int i = 0; i < sizeof(uint64_t) * 8; i++) {
+    if (i != 0 && i % 4 == 0)
+      printf(" ");
+
+    printf(\"%d\", (num & 0x8000000000000000) == 0 ? 0 : 1);
+    num <<= 1;
+  }
+
+  printf(\"\\n\");
+
+            Dest64 = sizeof(secOp);
+
             """,
             "bdp", overrideOpClass="CusAluOp")
     buildXSRegDataInst("adc",

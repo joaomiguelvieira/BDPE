@@ -1,10 +1,10 @@
 # This is a general solution for a makefile
 
-CC=aarch64-linux-gnu-g++
-CFLAGS=-c -ansi -std=c++11 -Wall -O3
+CC=aarch64-linux-gnu-gcc
+CFLAGS=-c -ansi -std=c99 -Wall -O3
 LDFLAGS=-static -I"../../../../include"
-EXECUTABLE=bdp
-SOURCES=bdp_test.cpp
+EXECUTABLE=bdp_test
+SOURCES=bdp_test.c
 OBJECTS=$(SOURCES:.c=.o)
 
 all: $(SOURCES) $(EXECUTABLE)
