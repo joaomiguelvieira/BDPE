@@ -9,8 +9,10 @@ uint64_t binary_dot_product_hw(uint64_t data, uint64_t kernel_address) {
   __asm("MOV X10, %[data]" : : [data] "r" (kernel_address));
 
   // perform operation
-  __asm(".long 0b00000001000010100000000100101001");
-  //             |||        | rm||t||i|| rn|| rd|
+  __asm(".long 0b10000011000010100000000100101001");
+  //                00      | rm|| im || rn|| rd|
+
+  // __asm("ADD X9, X9, X10");
 
   // store data back
   __asm("MOV %[result], X9" : [result] "=r" (result) : );
@@ -32,8 +34,7 @@ int main() {
   uint64_t n1 = 0xffffffffffffffff;
   uint64_t n2 = 0xffffffffffffffff;
 
-  print_binary(binary_dot_product_hw(n1, n2));
-  printf("\n");
+  printf("Result = %ld\n", binary_dot_product_hw(n1, n2));
 
   return 0;
 }

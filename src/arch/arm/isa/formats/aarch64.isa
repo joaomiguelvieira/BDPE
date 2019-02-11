@@ -42,7 +42,7 @@ output header {{
   namespace Aarch64
   {
     StaticInstPtr decodeDataProcImm(ExtMachInst machInst);
-    StaticInstPtr decodeCusDataProcImm(ExtMachInst machInst);
+    // StaticInstPtr decodeCusDataProcImm(ExtMachInst machInst);
     StaticInstPtr decodeBranchExcSys(ExtMachInst machInst);
     StaticInstPtr decodeLoadsStores(ExtMachInst machInst);
     StaticInstPtr decodeDataProcReg(ExtMachInst machInst);
@@ -1573,29 +1573,14 @@ output decoder {{
     StaticInstPtr
     decodeCusDataProcReg(ExtMachInst machInst)
     {
-      IntRegIndex rd = (IntRegIndex) (uint8_t) bits(machInst, 4, 0);
-      IntRegIndex rdsp = makeSP(rd);
+      ArmShiftType type = (ArmShiftType) (uint8_t) bits(machInst, 23, 22);
+      uint8_t imm6 = bits(machInst, 15, 10);
+      IntRegIndex rd = (IntRegIndex)(uint8_t)bits(machInst, 4, 0);
+      IntRegIndex rdzr = makeZero(rd);
+      IntRegIndex rn = (IntRegIndex)(uint8_t)bits(machInst, 9, 5);
+      IntRegIndex rm = (IntRegIndex)(uint8_t)bits(machInst, 20, 16);
 
-      IntRegIndex rn = (IntRegIndex) (uint8_t) bits(machInst, 9, 5);
-      IntRegIndex rnsp = makeSP(rn);
-
-      IntRegIndex rm = (IntRegIndex) (uint8_t) bits(machInst, 20, 16);
-
-      uint8_t imm3 = bits(machInst, 12, 10);
-
-      ArmExtendType type = (ArmExtendType) (uint8_t) bits(machInst, 15, 13);
-
-      switch (bits(machInst, 30, 29)) {
-        case 0x0:
-        return new BdpXEReg(machInst, rdsp, rnsp, rm, type, imm3);
-        case 0x1:
-        case 0x2:
-        case 0x3:
-        default:
-        M5_UNREACHABLE;
-      }
-
-      return new Unknown64(machInst);
+      return new BdpXSReg(machInst, rdzr, rn, rm, imm6, type);
     }
   }
 }};
