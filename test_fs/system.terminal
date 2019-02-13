@@ -365,128 +365,44 @@ individual files in /usr/share/doc/*/copyright.
 Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
 applicable law.
 
-root@localhost:~# ls
-bankingwk  hello.c    hello.sh  test.sh~  test2.sh~
-darknet    hello.out  test.sh   test2.sh
-root@localhost:~# ll
-total 68
-drwx------  5 root root 4096 Feb 11 16:28 ./
-drwxr-xr-x 20 root root 4096 Nov  7  2016 ../
--rw-r--r--  1 root root 3458 Nov  7  2016 .bashrc
--rw-r--r--  1 root root 3523 Nov  7  2016 .bashrc~
-drwx------  2 root root 4096 Feb 11 16:28 .cache/
--rw-r--r--  1 root root  148 Nov  7  2016 .profile
-drwxr-xr-x  2 root root 4096 Nov  7  2016 bankingwk/
-drwxr-xr-x 10 root root 4096 Feb  8  2019 darknet/
--rw-r--r--  1 root root 1702 Nov  7  2016 hello.c
--rwxr-xr-x  1 root root 9538 Nov  7  2016 hello.out*
--rwxr-xr-x  1 root root  110 Nov  7  2016 hello.sh*
--rwxr-xr-x  1 root root  466 Nov  7  2016 test.sh*
--rwxr-xr-x  1 root root  470 Nov  7  2016 test.sh~*
--rwxr-xr-x  1 root root  469 Nov  7  2016 test2.sh*
--rwxr-xr-x  1 root root  466 Nov  7  2016 test2.sh~*
-root@localhost:~# cd darknet/
-root@localhost:~/darknet# [H[Jroot@localhost:~/darknet# less    cat Makefile 
-ARM=1
-DEBUG=0
+root@localhost:~# cd darknet
+root@localhost:~/darknet# ls
+.3rdparty  Makefile   backup  darknet  include  results  src
+LICENSE   README.md  cfg     data     obj      scripts  weights
+/root@localhost:~/darknet# ./darknet detector test data/coco/coco.data cfg/defaultt/yolov3-tiny_xnor.test.cfg weights/yolov3-tiny_xnor_122000.weights ^C
+root@localhost:~/darknet# [H[Jroot@localhost:~/darknet# .- /darknet detect tor test data/svhn/svhn.data cfg/yolov3 -tiny-svhn_xnor.test.cfg weights/yolov3-tiny-svhn_xnor_129500.weights data/zzz.teest_images/2.jpg 
+layer     filters    size              input                output
+   0 conv     16  3 x 3 / 1   416 x 416 x   3   ->   416 x 416 x  16 0.150 BF
+   1 max          2 x 2 / 2   416 x 416 x  16   ->   208 x 208 x  16 0.003 BF
+   2 convX    32  3 x 3 / 1   208 x 208 x  16   ->   208 x 208 x  32 0.399 BF
+   3 max          2 x 2 / 2   208 x 208 x  32   ->   104 x 104 x  32 0.001 BF
+   4 convX    64  3 x 3 / 1   104 x 104 x  32   ->   104 x 104 x  64 0.399 BF
+   5 max          2 x 2 / 2   104 x 104 x  64   ->    52 x  52 x  64 0.001 BF
+   6 convX   128  3 x 3 / 1    52 x  52 x  64   ->    52 x  52 x 128 0.399 BF
+   7 max          2 x 2 / 2    52 x  52 x 128   ->    26 x  26 x 128 0.000 BF
+   8 convX   256  3 x 3 / 1    26 x  26 x 128   ->    26 x  26 x 256 0.399 BF
+   9 max          2 x 2 / 2    26 x  26 x 256   ->    13 x  13 x 256 0.000 BF
+  10 convX   512  3 x 3 / 1    13 x  13 x 256   ->    13 x  13 x 512 0.399 BF
+  11 max          2 x 2 / 1    13 x  13 x 512   ->    13 x  13 x 512 0.000 BF
+  12 convX  1024  3 x 3 / 1    13 x  13 x 512   ->    13 x  13 x1024 1.595 BF
+  13 convX   256  1 x 1 / 1    13 x  13 x1024   ->    13 x  13 x 256 0.089 BF
+  14 convX   512  3 x 3 / 1    13 x  13 x 256   ->    13 x  13 x 512 0.399 BF
+  15 conv     45  1 x 1 / 1    13 x  13 x 512   ->    13 x  13 x  45 0.008 BF
+  16 yolo
+  17 route  13
+  18 convX   128  1 x 1 / 1    13 x  13 x 256   ->    13 x  13 x 128 0.011 BF
+  19 upsample            2x    13 x  13 x 128   ->    26 x  26 x 128
+  20 route  19 8
+  21 convX   256  3 x 3 / 1    26 x  26 x 384   ->    26 x  26 x 256 1.196 BF
+  22 conv     45  1 x 1 / 1    26 x  26 x 256   ->    26 x  26 x  45 0.016 BF
+  23 yolo
+Total BFLOPS 5.462 
+Loading weights from weights/yolov3-tiny-svhn_xnor_129500.weights...
+ seen 64 
+Done!
 
-VPATH=./src/
-EXEC=darknet
-OBJDIR=./obj/
-
-ifeq ($(ARM), 0)
-CC=gcc
-CPP=g++
-else
-CC=aarch64-linux-gnu-gcc
-CPP=aarch64-linux-gnu-g++
-endif
-OPTS=-Ofast
-LDFLAGS= -lm -pthread 
-COMMON= -Iinclude/ 
-CFLAGS=-Wall -Wfatal-errors -Wno-unused-result -Wno-unknown-pragmas
-
-ifeq ($(DEBUG), 1) 
-OPTS= -O0 -g
-endif
-
-CFLAGS+=$(OPTS)
-
-OBJ=http_stream.o gemm.o utils.o convolutional_layer.o list.o image.o activations.o im2col.o col2im.o blas.o crop_layer.o dropout_layer.o maxpool_layer.o softmax_layer.o data.o matrix.o network.o connected_layer.o cost_layer.o parser.o option_list.o darknet.o detection_layer.o route_layer.o box.o normalization_layer.o avgpool_layer.o detector.o layer.o local_layer.o shortcut_layer.o activation_layer.o rnn_layer.o gru_layer.o crnn_layer.o batchnorm_layer.o region_layer.o reorg_layer.o reorg_old_layer.o tree.o yolo_layer.o upsample_layer.o
-
-OBJS = $(addprefix $(OBJDIR), $(OBJ))
-DEPS = $(wildcard src/*.h) Makefile include/darknet.h
-
-all: obj backup results setchmod $(EXEC) $(LIBNAMESO) $(APPNAMESO)
-
-$(EXEC): $(OBJS)
-	$(CPP) -std=c++11 $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
-
-$(OBJDIR)%.o: %.c $(DEPS)
-	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
-
-$(OBJDIR)%.o: %.cpp $(DEPS)
-	$(CPP) $(COMMON) $(CFLAGS) -c $< -o $@
-
-obj:
-	mkdir -p obj
-backup:
-	mkdir -p backup
-results:
-	mkdir -p results
-setchmod:
-	chmod +x scripts/default/*.sh
-	chmod +x scripts/*.sh
-
-.PHONY: clean
-
-clean:
-	rm -rf $(OBJS) $(EXEC) $(LIBNAMESO) $(APPNAMESO) predictions.jpg
-root@localhost:~/darknet# les  s Makefile 
--bash: less: command not found
-root@localhost:~/darknet# caty    , Makefile | grep CC
-[01;31m[KCC[m[K=gcc
-[01;31m[KCC[m[K=aarch64-linux-gnu-gcc
-	$([01;31m[KCC[m[K) $(COMMON) $(CFLAGS) -c $< -o $@
-root@localhost:~/darknet# aarch64-linux-gnu-gcc
-[01m[Kaarch64-linux-gnu-gcc:[m[K [01;31m[Kfatal error: [m[Kno input files
-compilation terminated.
-root@localhost:~/darknet# make'
-> ^C
-root@localhost:~/darknet# [H[Jroot@localhost:~/darknet# make
--bash: make: command not found
-root@localhost:~/darknet# [H[Jroot@localhost:~/darknet# make
--bash: make: command not found
-root@localhost:~/darknet# [H[Jroot@localhost:~/darknet# ll'   ll
-total 96
-drwxr-xr-x 10 root root  4096 Feb  8  2019 ./
-drwx------  5 root root  4096 Feb 11 16:28 ../
-drwxr-xr-x  8 root root  4096 Feb  8  2019 .git/
--rw-r--r--  1 root root    75 Feb  8  2019 .gitignore
-drwxr-xr-x  5 root root  4096 Feb  8  2019 3rdparty/
--rw-r--r--  1 root root   515 Feb  8  2019 LICENSE
--rw-r--r--  1 root root  1473 Feb  8  2019 Makefile
--rw-r--r--  1 root root 43742 Feb  8  2019 README.md
-drwxr-xr-x  3 root root  4096 Feb  8  2019 cfg/
-drwxr-xr-x  6 root root  4096 Feb  8  2019 data/
-drwxr-xr-x  2 root root  4096 Feb  8  2019 include/
-drwxr-xr-x  3 root root  4096 Feb  8  2019 scripts/
-drwxr-xr-x  2 root root  4096 Feb  8  2019 src/
-drwxr-xr-x  2 root root  4096 Feb  8  2019 weights/
-root@localhost:~/darknet# l [H[Jroot@localhost:~/darknet# ll
-total 96
-drwxr-xr-x 10 root root  4096 Feb  8  2019 ./
-drwx------  5 root root  4096 Feb 11 16:28 ../
-drwxr-xr-x  8 root root  4096 Feb  8  2019 .git/
--rw-r--r--  1 root root    75 Feb  8  2019 .gitignore
-drwxr-xr-x  5 root root  4096 Feb  8  2019 3rdparty/
--rw-r--r--  1 root root   515 Feb  8  2019 LICENSE
--rw-r--r--  1 root root  1473 Feb  8  2019 Makefile
--rw-r--r--  1 root root 43742 Feb  8  2019 README.md
-drwxr-xr-x  3 root root  4096 Feb  8  2019 cfg/
-drwxr-xr-x  6 root root  4096 Feb  8  2019 data/
-drwxr-xr-x  2 root root  4096 Feb  8  2019 include/
-drwxr-xr-x  3 root root  4096 Feb  8  2019 scripts/
-drwxr-xr-x  2 root root  4096 Feb  8  2019 src/
-drwxr-xr-x  2 root root  4096 Feb  8  2019 weights/
-root@localhost:~/darknet# [H[Jroot@localhost:~/darknet# 
+data/zzz.test_images/2.jpg: Predicted in 3200.365000 milli-seconds.
+two: 32%
+Not compiled with OpenCV, saving to predictions.png instead
+root@localhost:~/darknet# 
+root@localhost:~/darknet# 

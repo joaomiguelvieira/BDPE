@@ -1,21 +1,27 @@
 #include <stdint.h>
 #include <stdio.h>
 
-uint64_t binary_dot_product_hw(uint64_t data, uint64_t kernel_address) {
-  uint64_t result = 0;
+uint64_t bdp_hw(uint64_t *ptr_d, uint64_t *ptr_k) {
+  uint64_t result;
+  uint64_t tmp1, tmp2;
 
-  // move data to registers
-  __asm("MOV X9,  %[data]" : : [data] "r" (data));
-  __asm("MOV X10, %[data]" : : [data] "r" (kernel_address));
-
-  // perform operation
-  __asm(".long 0b10000011000010100000000100101001");
-  //                00      | rm|| im || rn|| rd|
-
-  // __asm("ADD X9, X9, X10");
-
-  // store data back
-  __asm("MOV %[result], X9" : [result] "=r" (result) : );
+  // backup registers
+  __asm("STR X9,  [%[x9_str]]\n\t"                     // backup register x9
+        "STR X10, [%[x10_str]]\n\t"                    // backup register x10
+        "LDR X9,  [%[d_mem]]\n\t"                      // load data into register x9
+        "LDR X10, [%[k_mem]]\n\t"                      // load kernel into register x10
+        ".long 0b10000011000010100000000100101001\n\t" // issue operation
+        "STR X9,  [%[r_mem]]\n\t"                      // store operation result
+        "LDR X9,  [%[x9_ldr]]\n\t"                     // backup register x9
+        "LDR X10, [%[x10_ldr]]\n\t"                    // backup register x10
+        : : [x9_str]  "r" (&tmp1),
+            [x10_str] "r" (&tmp2),
+            [d_mem]   "r" (ptr_d),
+            [k_mem]   "r" (ptr_k),
+            [r_mem]   "r" (&result),
+            [x9_ldr]  "r" (&tmp1),
+            [x10_ldr] "r" (&tmp2)
+  );
 
   return result;
 }
@@ -34,7 +40,6 @@ int main() {
   uint64_t n1 = 0xffffffffffffffff;
   uint64_t n2 = 0xffffffffffffffff;
 
-  printf("Result = %ld\n", binary_dot_product_hw(n1, n2));
-
+  printf("Result = %ld\n", bdp_hw(&n1, &n2));
   return 0;
 }

@@ -153,22 +153,7 @@ let {{
     buildXSRegDataInst("eon", "Dest64 = Op164 ^ ~secOp;", buildCc = False)
     buildDataInst("sub", "Dest64 = resTemp = Op164 - secOp;", "sub")
     buildDataInst("add", "Dest64 = resTemp = Op164 + secOp;", "add")
-    buildDataInst("bdp",
-            """
-            uint64_t data = Op164;
-            uint64_t kernel = secOp;
-
-            resTemp = 0;
-
-            for (int i = 0; i < sizeof(uint64_t) * 8; i++) {
-                resTemp += ((kernel & 1) == (data & 1)) ? 1 : 0;
-                kernel >>= 1;
-                data >>= 1;
-            }
-
-            Dest64 = resTemp;
-            """,
-            "bdp", overrideOpClass="CusAluOp")
+    buildDataInst("bdp", "Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp));", "bdp", overrideOpClass="CusAluOp")
     buildXSRegDataInst("adc",
             "Dest64 = resTemp = Op164 + secOp + %s;" % oldC, "add")
     buildXSRegDataInst("sbc",
