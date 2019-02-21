@@ -1,7 +1,7 @@
 # This is a general solution for a makefile
 
 CC=aarch64-linux-gnu-gcc
-CFLAGS=-c -ansi -std=c99 -Wall -O3
+CFLAGS=-c -ansi -std=c99 -Wall -O0
 LDFLAGS=-static -I"../../../../include"
 EXECUTABLE=bdp_test
 SOURCES=bdp_test.c
