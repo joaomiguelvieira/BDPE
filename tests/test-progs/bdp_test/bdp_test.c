@@ -2,15 +2,17 @@
 #include <stdio.h>
 
 uint64_t test_function() {
-  register uint64_t res = 1;
-  register uint64_t one = 1;
+  __asm( ".long 0b10000011000010100000000100101001\n\t"
+         "cmp x9, 0x0\n\t"
+         "b.eq 0xc\n\t"
+         ".long 0b10100011000010100000000100101001\n\t"
+         "b 0x8\n\t"
+         ".long 0b11000011000010100000000100101001\n\t"
+         // "b.vs 0x8\n\t"
+         // "add %[res], %[val], 0x1\n\t" : [res] "=r" (res) : [one] "r" (one), [val] "r" (res)
+        );
 
-  __asm( //"cmp %[one], 0x2\n\t"
-         ".long 0b10000011000010100000000100101001\n\t"
-         "b.vs 0x8\n\t"
-         "add %[res], %[val], 0x1\n\t" : [res] "=r" (res) : [one] "r" (one), [val] "r" (res));
-
-  return res;
+  return 0;
 }
 
 // uint64_t bdp_hw(uint64_t *ptr_d, uint64_t *ptr_k) {
@@ -55,7 +57,7 @@ int main() {
   // printf("Result = %ld\n", bdp_hw(&n1, &n2));
   // return 0;
 
-  printf("The result is %ld\n", test_function());
+  test_function();
 
   return 0;
 }

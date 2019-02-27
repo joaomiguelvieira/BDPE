@@ -42,7 +42,6 @@ output header {{
   namespace Aarch64
   {
     StaticInstPtr decodeDataProcImm(ExtMachInst machInst);
-    // StaticInstPtr decodeCusDataProcImm(ExtMachInst machInst);
     StaticInstPtr decodeBranchExcSys(ExtMachInst machInst);
     StaticInstPtr decodeLoadsStores(ExtMachInst machInst);
     StaticInstPtr decodeDataProcReg(ExtMachInst machInst);
@@ -205,64 +204,6 @@ output decoder {{
     }
   }
 }};
-
-// decode instruction
-// output decoder {{
-//   namespace Aarch64
-//   {
-//     StaticInstPtr
-//     decodeCusDataProcImm(ExtMachInst machInst)
-//     {
-//       IntRegIndex rd = (IntRegIndex)(uint32_t)bits(machInst, 4, 0);
-//       IntRegIndex rdsp = makeSP(rd);
-
-//       IntRegIndex rn = (IntRegIndex)(uint32_t)bits(machInst, 9, 5);
-//       IntRegIndex rnsp = makeSP(rn);
-
-//       uint8_t opc = bits(machInst, 30, 29);
-
-//       switch (bits(machInst, 25, 23)) {
-//         case 0:
-//         case 1:
-//             //M5_UNREACHABLE;
-//             //return new FailUnimplemented("Unhandled Case8", machInst);
-//         return new Unknown64(machInst);
-//         case 0x2:
-//         case 0x3:
-//         { 
-//           uint32_t imm12 = bits(machInst, 21, 10);
-//           uint8_t shift = bits(machInst, 23, 22);
-//           uint32_t imm;
-//           if (shift == 0x0)
-//             imm = imm12 << 0;
-//           else if (shift == 0x1)
-//             imm = imm12 << 12;
-//           else
-//             return new Unknown64(machInst);
-
-//           switch (opc) {
-//             case 0x0:
-//             return new BdpXImm(machInst, rdsp, rnsp, imm);
-//             default:
-//               //M5_UNREACHABLE;
-//             return new Unknown64(machInst);
-//           }
-//         }
-//         case 4:
-//         case 5:
-//         case 6:
-//         case 7:
-//             //M5_UNREACHABLE;
-//             //return new FailUnimplemented("Unhandled Case8", machInst);
-//         return new Unknown64(machInst);
-//         default:
-//             //M5_UNREACHABLE;
-//             //return new FailUnimplemented("Unhandled Case8", machInst);
-//         return new Unknown64(machInst);
-//       }
-//     }
-//   }
-// }};
 
 output decoder {{
   namespace Aarch64
@@ -1564,9 +1505,6 @@ return new FailUnimplemented("Unhandled Case2", machInst);
 }
 }};
 
-// ================================================================================================
-
-// decode instruction
 output decoder {{
   namespace Aarch64
   {
@@ -1580,12 +1518,21 @@ output decoder {{
       IntRegIndex rn = (IntRegIndex)(uint8_t)bits(machInst, 9, 5);
       IntRegIndex rm = (IntRegIndex)(uint8_t)bits(machInst, 20, 16);
 
-      return new BdpXSReg(machInst, rdzr, rn, rm, imm6, type);
+      uint8_t switchVal = bits(machInst, 30, 29);
+
+      switch (switchVal) {
+        case 0x0:
+          return new ChkXSReg(machInst, rdzr, rn, rm, imm6, type);
+        case 0x1:
+          return new DprXSReg(machInst, rdzr, rn, rm, imm6, type);
+        case 0x2:
+          return new DpmXSReg(machInst, rdzr, rn, rm, imm6, type);
+        default:
+          M5_UNREACHABLE;
+      }
     }
   }
 }};
-
-// ================================================================================================
 
 output decoder {{
   namespace Aarch64

@@ -74,7 +74,9 @@ let {{
     carryCode64 = {
         "none": "none",
         "add": 'findCarry(intWidth, resTemp, Op164, secOp)',
-        "bdp": '0',
+        "chk": '0',
+        "dpr": '0',
+        "dpm": '0',
         "sub": 'findCarry(intWidth, resTemp, Op164, ~secOp)',
         "logic": '0'
     }
@@ -82,7 +84,9 @@ let {{
     overflowCode64 = {
         "none": "none",
         "add": 'findOverflow(intWidth, resTemp, Op164, secOp)',
-        "bdp": '0',
+        "chk": '0',
+        "dpr": '0',
+        "dpm": '0',
         "sub": 'findOverflow(intWidth, resTemp, Op164, ~secOp)',
         "logic": '0'
     }
@@ -153,7 +157,11 @@ let {{
     buildXSRegDataInst("eon", "Dest64 = Op164 ^ ~secOp;", buildCc = False)
     buildDataInst("sub", "Dest64 = resTemp = Op164 - secOp;", "sub")
     buildDataInst("add", "Dest64 = resTemp = Op164 + secOp;", "add")
-    buildDataInst("bdp", "Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp));", "bdp", overrideOpClass="CusAluOp")
+    
+    buildDataInst("chk", "Dest64 = resTemp = 0; printf(\"Function was called for CHK!\\n\");", "chk", overrideOpClass="CusAluOp")
+    buildDataInst("dpr", "Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp)); printf(\"Function was called for DPR!\\n\");", "dpr", overrideOpClass="CusAluOp")
+    buildDataInst("dpm", "Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp)); printf(\"Function was called for DPM!\\n\");", "dpm", overrideOpClass="CusAluOp")
+    
     buildXSRegDataInst("adc",
             "Dest64 = resTemp = Op164 + secOp + %s;" % oldC, "add")
     buildXSRegDataInst("sbc",
@@ -592,10 +600,19 @@ let {{
         '''
 
     buildDataXCondImmInst("ccmn", condCompCode("add", "+", True))
-    buildDataXCondImmInst("ccmc", condCompCode("bdp", "+", True))
+    
+    buildDataXCondImmInst("ccmc", condCompCode("chk", "+", True))
+    buildDataXCondImmInst("ccmr", condCompCode("dpr", "+", True))
+    buildDataXCondImmInst("ccmm", condCompCode("dpm", "+", True))
+
     buildDataXCondImmInst("ccmp", condCompCode("sub", "-", True))
+    
     buildDataXCondRegInst("ccmn", condCompCode("add", "+", False))
-    buildDataXCondRegInst("ccmc", condCompCode("bdp", "+", False))
+    
+    buildDataXCondRegInst("ccmc", condCompCode("chk", "+", False))
+    buildDataXCondRegInst("ccmr", condCompCode("dpr", "+", False))
+    buildDataXCondRegInst("ccmm", condCompCode("dpm", "+", False))
+    
     buildDataXCondRegInst("ccmp", condCompCode("sub", "-", False))
 
     condSelCode = '''
