@@ -1,63 +1,48 @@
 #include <stdint.h>
 #include <stdio.h>
 
-uint64_t test_function() {
-  __asm( ".long 0b10000011000010100000000100101001\n\t"
-         "cmp x9, 0x0\n\t"
-         "b.eq 0xc\n\t"
-         ".long 0b10100011000010100000000100101001\n\t"
-         "b 0x8\n\t"
-         ".long 0b11000011000010100000000100101001\n\t"
-         // "b.vs 0x8\n\t"
-         // "add %[res], %[val], 0x1\n\t" : [res] "=r" (res) : [one] "r" (one), [val] "r" (res)
-        );
+uint64_t bdp_hw(uint64_t data, uint64_t *ptr_k) {
+  register uint64_t result;
 
-  return 0;
+  __asm("sub sp, sp, 0x10\n\t"                         // open some space in the stack
+        "stp x10, x11, [sp]\n\t"                       // save pair of registers
+
+        "mov x11, %[ptr_k]\n\t"                        // move kernel address to register x11
+        ".long 0b10000011000010100000000101101011\n\t" // check if kernel is cached
+        "mov x10, %[data]\n\t"                         // move data to register x10
+        "cmp x11, 0x0\n\t"                             // compare the returned address with null
+        "b.ne 0x10\n\t"                                // branch if not null (use cached kernel)
+        "ldr x11, [%[ptr_k]]\n\t"                      // load kernel from memory
+        ".long 0b11000011000010110000000101001010\n\t" // issue operation using data and kernel from memory
+        "b 0x8\n\t"                                    // branch to restore  
+        ".long 0b10100011000010110000000101001010\n\t" // issue operation using data and cached kernel
+        "mov %[res], x10\n\t"                          // put result in place
+
+        "ldp x10, x11, [sp]\n\t"                       // restore pair of registers
+        "add sp, sp, 0x10\n\t"                         // free the space in the stack
+        : [res]        "=r" (result)
+        : [data]       "r"  (data),
+          [ptr_k]      "r"  (ptr_k)
+  );
+
+  return result;
 }
 
-// uint64_t bdp_hw(uint64_t *ptr_d, uint64_t *ptr_k) {
-//   uint64_t result;
-//   uint64_t tmp1, tmp2;
+void print_binary(uint64_t num) {
+  for (int i = 0; i < sizeof(uint64_t) * 8; i++) {
+    if (i != 0 && i % 4 == 0)
+      printf(" ");
 
-//   // backup registers
-//   __asm("STR X9,  [%[x9_str]]\n\t"                     // backup register x9
-//         "STR X10, [%[x10_str]]\n\t"                    // backup register x10
-//         "LDR X9,  [%[d_mem]]\n\t"                      // load data into register x9
-//         "LDR X10, [%[k_mem]]\n\t"                      // load kernel into register x10
-//         ".long 0b10000011000010100000000100101001\n\t" // issue operation
-//         "STR X9,  [%[r_mem]]\n\t"                      // store operation result
-//         "LDR X9,  [%[x9_ldr]]\n\t"                     // backup register x9
-//         "LDR X10, [%[x10_ldr]]\n\t"                    // backup register x10
-//         : : [x9_str]  "r" (&tmp1),
-//             [x10_str] "r" (&tmp2),
-//             [d_mem]   "r" (ptr_d),
-//             [k_mem]   "r" (ptr_k),
-//             [r_mem]   "r" (&result),
-//             [x9_ldr]  "r" (&tmp1),
-//             [x10_ldr] "r" (&tmp2)
-//   );
-
-//   return result;
-// }
-
-// void print_binary(uint64_t num) {
-//   for (int i = 0; i < sizeof(uint64_t) * 8; i++) {
-//     if (i != 0 && i % 4 == 0)
-//       printf(" ");
-
-//     printf("%d", (num & 0x8000000000000000) == 0 ? 0 : 1);
-//     num <<= 1;
-//   }
-// }
+    printf("%d", (num & 0x8000000000000000) == 0 ? 0 : 1);
+    num <<= 1;
+  }
+}
 
 int main() {
-  // uint64_t n1 = 0xffffffffffffffff;
-  // uint64_t n2 = 0xffffffffffffffff;
+  uint64_t n1 = 0xfffffffffffffff1;
+  uint64_t n2 = 0xfffffffffffffff2;
 
-  // printf("Result = %ld\n", bdp_hw(&n1, &n2));
-  // return 0;
-
-  test_function();
+  printf("Result = %ld\n", bdp_hw(n1, &n2));
 
   return 0;
 }
