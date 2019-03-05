@@ -163,7 +163,7 @@ let {{
 
         // populate reram here
         
-
+        printf(\"%lu,\", Op164);
         // printf(\"Called CHK\\n\");
         // printf(\"-> Op164: %lx\\n\", Op164);
         // printf(\"-> secOp: %lx\\n\", secOp);
@@ -177,7 +177,6 @@ let {{
 
         // populate reram here
         
-
         // printf(\"Called DPR\\n\");
         // printf(\"-> Op164: %lx\\n\", Op164);
         // printf(\"-> secOp: %lx\\n\", reram[secOp]);
@@ -191,6 +190,7 @@ let {{
         // printf(\"-> Op164: %lx\\n\", Op164);
         // printf(\"-> secOp: %lx\\n\", secOp);
 
+        printf(\"%lu\\n\", secOp);
         Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp));
         """,
         "dpm", overrideOpClass="CusAluOp")
