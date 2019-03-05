@@ -79,7 +79,7 @@ for address, freq in call_freq.iteritems():
 mem_file = open(args.output, "w")
 
 for address, data in reram.iteritems():
-	mem_file.write("reram[{}] = {};\n".format(address, data))
+	mem_file.write("reram[{0}] = {1:#0{2}x};\n".format(address, data, 18))
 
 mem_file.close()
 
