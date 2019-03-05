@@ -34,6 +34,9 @@ for line in kernel_addresses:
 
 	if address not in kernel_mem:
 		kernel_mem[address] = kernel
+	else:
+		if kernel_mem[address] != kernel:
+			print Tags.ERROR + "File has different values for address {}".format(address)
 
 	if address in call_freq:
 		call_freq[address] += 1
