@@ -11,12 +11,12 @@ uint64_t bdp_hw(uint64_t data, uint64_t *ptr_k) {
         ".long 0b10000011000010100000000101101011\n\t" // check if kernel is cached
         "mov x10, %[data]\n\t"                         // move data to register x10
         "cmp x11, 0x0\n\t"                             // compare the returned address with null
-        "b.ne 0x14\n\t"                                // branch if not null (use cached kernel)
+        "b.ne 0x10\n\t"                                // branch if not null (use cached kernel)
         "ldr x11, [%[ptr_k]]\n\t"                      // load kernel from memory
         ".long 0b11000011000010110000000101001010\n\t" // issue operation using data and kernel from memory
-        "mov %[res], x10\n\t"                          // put result in place
         "b 0x8\n\t"                                    // branch to restore  
         ".long 0b10100011000010110000000101001010\n\t" // issue operation using data and cached kernel
+        "mov %[res], x10\n\t"                          // put result in place
 
         "ldp x10, x11, [sp]\n\t"                       // restore pair of registers
         "add sp, sp, 0x10\n\t"                         // free the space in the stack

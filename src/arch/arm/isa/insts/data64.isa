@@ -159,29 +159,39 @@ let {{
     buildDataInst("add", "Dest64 = resTemp = Op164 + secOp;", "add")
     
     buildDataInst("chk", """
-        Dest64 = resTemp = 0;
+        std::map<uint64_t, uint64_t> reram;
+
+        // populate reram here
         
-        // printf(\"Function was called for CHK!\\n\");
-        // printf(\"-> Op164 = %lx\\n\", Op164);
-        // printf(\"-> secOp = %lx\\n\", secOp);
+        printf(\"%lu,\", Op164);
+        // printf(\"Called CHK\\n\");
+        // printf(\"-> Op164: %lx\\n\", Op164);
+        // printf(\"-> secOp: %lx\\n\", secOp);
+
+        Dest64 = resTemp = (reram.find(Op164) == reram.end()) ? 0 : Op164;
         """,
         "chk", overrideOpClass="CusAluOp")
 
     buildDataInst("dpr", """
-        Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp));
+        std::map<uint64_t, uint64_t> reram;
 
-        // printf(\"Function was called for DPR!\\n\");
-        // printf(\"-> Op164 = %lx\\n\", Op164);
-        // printf(\"-> secOp = %lx\\n\", secOp);
+        // populate reram here
+        
+        // printf(\"Called DPR\\n\");
+        // printf(\"-> Op164: %lx\\n\", Op164);
+        // printf(\"-> secOp: %lx\\n\", reram[secOp]);
+
+        Dest64 = resTemp = __builtin_popcountll(~(Op164^reram[secOp]));
         """,
         "dpr", overrideOpClass="CusAluOp")
 
     buildDataInst("dpm", """
-        Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp));
+        // printf(\"Called DPM\\n\");
+        // printf(\"-> Op164: %lx\\n\", Op164);
+        // printf(\"-> secOp: %lx\\n\", secOp);
 
-        // printf(\"Function was called for DPM!\\n\");
-        // printf(\"-> Op164 = %lx\\n\", Op164);
-        // printf(\"-> secOp = %lx\\n\", secOp);
+        printf(\"%lu\\n\", secOp);
+        Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp));
         """,
         "dpm", overrideOpClass="CusAluOp")
     
