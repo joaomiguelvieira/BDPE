@@ -4,8 +4,8 @@
 uint64_t bdp_hw(uint64_t data, uint64_t *ptr_k) {
   register uint64_t result;
 
-  __asm("sub sp, sp, 0x10\n\t"                         // open some space in the stack
-        "stp x10, x11, [sp]\n\t"                       // save pair of registers
+  __asm(//"sub sp, sp, 0x10\n\t"                         // open some space in the stack
+        //"stp x10, x11, [sp]\n\t"                       // save pair of registers
 
         "mov x11, %[ptr_k]\n\t"                        // move kernel address to register x11
         ".long 0b10000011000010100000000101101011\n\t" // check if kernel is cached
@@ -18,8 +18,8 @@ uint64_t bdp_hw(uint64_t data, uint64_t *ptr_k) {
         ".long 0b10100011000010110000000101001010\n\t" // issue operation using data and cached kernel
         "mov %[res], x10\n\t"                          // put result in place
 
-        "ldp x10, x11, [sp]\n\t"                       // restore pair of registers
-        "add sp, sp, 0x10\n\t"                         // free the space in the stack
+        //"ldp x10, x11, [sp]\n\t"                       // restore pair of registers
+        //"add sp, sp, 0x10\n\t"                         // free the space in the stack
         : [res]        "=r" (result)
         : [data]       "r"  (data),
           [ptr_k]      "r"  (ptr_k)
