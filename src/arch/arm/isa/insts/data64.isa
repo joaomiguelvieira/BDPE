@@ -373,7 +373,7 @@ let {{
         reram[42789192] = 0x009a0ffffa003f7f;
         
         // uncomment this to debug
-        printf(\"Called DPR:%lx:%lx\\n\", Op164, secOp);
+        // printf(\"Called DPR:%lx:%lx\\n\", Op164, secOp);
         // printf(\"-> Op164: %lx\\n\", Op164);
         // printf(\"-> secOp: %lx\\n\", reram[secOp]);
 
