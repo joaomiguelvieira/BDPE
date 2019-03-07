@@ -7,7 +7,7 @@ fi
 if [ $# -eq 2 ]; then
         OUT=$2
 else
-        BIN='m5out'
+        OUT='m5out'
 fi
 
 build/ARM/gem5.opt -d "$OUT" configs/example/se.py \
