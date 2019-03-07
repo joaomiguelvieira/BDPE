@@ -262,12 +262,13 @@ let {{
         // uncoment this to do profiling
         // printf(\"%lu,\", Op164);
 
+        Dest64 = resTemp = (reram.find(secOp) == reram.end()) ? secOp : __builtin_popcountll(~(Op164^reram[secOp]));
+
         // uncomment this to debug
         // printf(\"Called CHK\\n\");
-        // printf(\"-> Op164: %lx\\n\", Op164);
-        // printf(\"-> secOp: %lx\\n\", secOp);
-
-        Dest64 = resTemp = (reram.find(Op164) == reram.end()) ? 0 : Op164;
+        // printf(\"->  Op164: %lx\\n\", Op164);
+        // printf(\"->  secOp: %lx\\n\", reram[secOp]);
+        // printf(\"-> Dest64: %lx\\n\", Dest64);
         """,
         "chk", overrideOpClass="CusAluOp")
 
@@ -373,7 +374,7 @@ let {{
         reram[42789192] = 0x009a0ffffa003f7f;
         
         // uncomment this to debug
-        // printf(\"Called DPR:%lx:%lx\\n\", Op164, secOp);
+        // printf(\"Called DPR\\n\");
         // printf(\"-> Op164: %lx\\n\", Op164);
         // printf(\"-> secOp: %lx\\n\", reram[secOp]);
 
