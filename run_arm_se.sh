@@ -4,7 +4,13 @@ else
 	BIN=$1
 fi
 
-build/ARM/gem5.opt configs/example/se.py \
+if [ $# -eq 2 ]; then
+        OUT=$2
+else
+        OUT='m5out'
+fi
+
+build/ARM/gem5.opt -d "$OUT" configs/example/se.py \
 	--cpu-clock=2GHz \
 	--caches \
 	--l2cache \

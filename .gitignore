@@ -31,3 +31,9 @@ m5out
 /test_fs
 /tests/test-progs/bdp_test/bdp_test.o
 /tests/test-progs/bdp_test/bdp_test
+/another_test/
+/dpr_calls.txt
+/edited_asm_out/
+/m5out_accelerated/
+/m5out_baseline/
+
