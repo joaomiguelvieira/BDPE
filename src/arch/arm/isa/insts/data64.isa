@@ -164,7 +164,7 @@ let {{
         Dest64 = resTemp = (reram.find(secOp) == reram.end()) ? secOp : __builtin_popcountll(~(Op164^reram[secOp]));
 
         // uncoment this to do profiling
-        printf(\"%lu,%lu\\n\", secOp, Op164);
+        printf(\"%lu,\", secOp);
 
         // uncomment this to debug
         // printf(\"Called CHK\\n\");
@@ -176,6 +176,9 @@ let {{
 
     buildDataInst("dpm", """
         Dest64 = resTemp = __builtin_popcountll(~(Op164^secOp));
+
+        // uncoment this to do profiling
+        printf(\"%lu\\n\", secOp);
 
         // uncomment this to debug
         // printf(\"Called DPM\\n\");
