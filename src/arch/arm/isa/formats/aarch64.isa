@@ -1523,8 +1523,6 @@ output decoder {{
       switch (switchVal) {
         case 0x0:
           return new ChkXSReg(machInst, rdzr, rn, rm, imm6, type);
-        case 0x1:
-          return new DprXSReg(machInst, rdzr, rn, rm, imm6, type);
         case 0x2:
           return new DpmXSReg(machInst, rdzr, rn, rm, imm6, type);
         default:
