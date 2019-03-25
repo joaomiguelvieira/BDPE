@@ -36,4 +36,4 @@ m5out
 /edited_asm_out/
 /m5out_accelerated/
 /m5out_baseline/
-
+/darknet_accelerated_out/
