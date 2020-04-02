@@ -29,11 +29,13 @@ load yolov3_profiling.mat;
 
 figure('Position', [699, 259, 560, 300]);
 bar(graphs.freq(1:4000), 'r'); hold on;
-bar([zeros(4000, 1); graphs.freq(4001:end)], 'b')
+bar([zeros(4000, 1); graphs.freq(4001:end)])
 set(gca,'yscale','log')
 xlabel("Kernel relative address");
 ylabel("Number of uses");
-saveas(gcf, 'kernel_usage_all.eps', 'epsc');
+
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+saveas(gcf, 'img/kernel_usage_all.eps', 'epsc');
 
 figure('Position', [699, 259, 280, 300]);
 bar(graphs.freq(1:4000), 'r')
@@ -41,4 +43,6 @@ set(gca,'yscale','log')
 xlabel("Kernel relative address");
 ylabel("Number of uses");
 set(gca, 'YGrid', 'on', 'XGrid', 'off');
-saveas(gcf, 'kernel_usage_zoom.eps', 'epsc');
+
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+saveas(gcf, 'img/kernel_usage_zoom.eps', 'epsc');

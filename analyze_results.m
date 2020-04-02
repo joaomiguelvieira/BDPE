@@ -67,7 +67,7 @@ graphs.hit_rates     = str2double(hit_rates(1:length(hit_rates) - 1));
 graphs.mem_spares    = mem_spare(1:length(mem_spare) - 1);
 graphs.timings       = [1917.167, 1700.376, 1694.860, 1695.145, 1695.077, 1695.238];
 graphs.cache_misses  = [cache_misses_baseline; cache_misses(1:length(cache_misses) - 1)];
-graphs.xcache_misses = ["Base", hit_rates(1:length(hit_rates) - 1)];
+graphs.xcache_misses = ["BL", hit_rates(1:length(hit_rates) - 1)];
 
 % memory accesses spares
 figure('Position', [699, 259, 280, 250]);
@@ -80,7 +80,9 @@ set(gca, 'xticklabel', graphs.hit_rates);
 ytickformat('%.2f');
 ylabel({"Relative memory"; "accesses reduction"});
 xlabel("BPDE usage rate [%]");
-saveas(gcf,'mem_spares.eps', 'epsc');
+
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+saveas(gcf,'img/mem_spares.eps', 'epsc');
 
 % timings
 figure('Position', [699, 259, 280, 250]);
@@ -104,7 +106,9 @@ set(gca, 'xticklabel', graphs.xcache_misses);
 ylabel("Performance gains [%]");
 %annotation('doublearrow', [], []);
 xlabel("BPDE usage rate [%]");
-saveas(gcf, 'timings.eps', 'epsc');
+
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+saveas(gcf, 'img/timings.eps', 'epsc');
 
 % cache misses
 figure('Position', [699, 259, 280, 300]);
@@ -116,11 +120,12 @@ ytickformat('%.5f');
 ylabel("L1 data cache misses");
 xlabel("BPDE usage rate [%]");
 
-annotation('line', [.32, .42], [.86, .86], 'LineStyle', '--');
-annotation('doublearrow', [.37, .37], [.19, .86]);
-annotation('textbox',[.28, .44, .25, .25],'String','\approx 0.01%','FitBoxToText','on','BackgroundColor','white');
+annotation('line', [.38, .48], [.86, .86], 'LineStyle', '--');
+annotation('doublearrow', [.435, .435], [.21, .86]);
+annotation('textbox',[.35, .4, .25, .25],'String','\approx 0.01%','FitBoxToText','on','BackgroundColor','white');
 
-saveas(gcf, 'cache_misses.eps', 'epsc');
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+saveas(gcf, 'img/cache_misses.eps', 'epsc');
 
 %% Plot energy results
 energy_results      = xlsread("power_calculation_fdsoi.xlsx", "Sheet1", "B14:H14");
@@ -138,11 +143,12 @@ ytickformat('%.3f');
 ylabel({"Total energy spent"; "excluding DRAM [J]"});
 xlabel("BPDE usage rate [%]");
 
-annotation('line', [.42, .52], [.859, .859], 'LineStyle', '--');
-annotation('doublearrow', [.458, .458], [.205, .859]);
+annotation('line', [.45, .55], [.859, .859], 'LineStyle', '--');
+annotation('doublearrow', [.495, .495], [.225, .859]);
 annotation('textbox',[.43, .25, .2, .35],'String','7.4%','FitBoxToText','on','BackgroundColor','white');
 
-saveas(gcf, 'energy_results.eps', 'epsc');
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+saveas(gcf, 'img/energy_results.eps', 'epsc');
 
 figure('Position', [699, 259, 280, 300]);
 bar(graphs.energy_results_dram);
@@ -153,8 +159,9 @@ ytickformat('%.3f');
 ylabel("Total energy spent [J]");
 xlabel("BPDE usage rate [%]");
 
-annotation('line', [.37, .47], [.859, .859], 'LineStyle', '--');
-annotation('doublearrow', [.42, .42], [.205, .859]);
+annotation('line', [.4, .5], [.859, .859], 'LineStyle', '--');
+annotation('doublearrow', [.45, .45], [.225, .859]);
 annotation('textbox',[.38, .25, .2, .35],'String','40.51 mJ','FitBoxToText','on','BackgroundColor','white');
 
-saveas(gcf, 'energy_results_dram.eps', 'epsc');
+set(findall(gcf,'-property','FontSize'),'FontSize',12)
+saveas(gcf, 'img/energy_results_dram.eps', 'epsc');
